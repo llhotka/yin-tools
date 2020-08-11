@@ -40,6 +40,9 @@ NOTES:
 
    <pattern value="..."><?delim )?></pattern>
 
+4. If the "date" parameter is set, this value will overwrite the data
+   of the first (most recent) revision in the YANG module.
+
 ==
 
 yin2yang.xsl is free software: you can redistribute it and/or modify
@@ -67,7 +70,7 @@ License along with this file.  If not, see
   <strip-space elements="*"/>
 
   <!-- The 'date' parameter, if set, overrides the value of the
-       'revision' statement. -->
+       first (most recent) 'revision' statement. -->
   <param name="date"/>
   <!-- Amount of indentation added for each YANG hierarchy level. -->
   <param name="indent-step" select="2"/>
@@ -83,17 +86,6 @@ License along with this file.  If not, see
       <with-param name="string" select="' '"/>
     </call-template>
   </variable>
-
-  <template name="rev-date">
-    <choose>
-      <when test="$date">
-	<value-of select="$date"/>
-      </when>
-      <otherwise>
-	<value-of select="@date"/>
-      </otherwise>
-    </choose>
-  </template>
 
   <template name="repeat-string">
     <param name="count"/>
@@ -481,15 +473,14 @@ License along with this file.  If not, see
   <template match="yin:revision">
     <call-template name="statement">
       <with-param name="arg">
-	<call-template name="rev-date"/>
-      </with-param>
-    </call-template>
-  </template>
-
-  <template match="yin:include/yin:revision-date">
-    <call-template name="statement">
-      <with-param name="arg">
-	<call-template name="rev-date"/>
+	<choose>
+	  <when test="not($date) or preceding-sibling::yin:revision">
+	    <value-of select="@date"/>
+	  </when>
+	  <otherwise>
+	    <value-of select="$date"/>
+	  </otherwise>
+	</choose>
       </with-param>
     </call-template>
   </template>
