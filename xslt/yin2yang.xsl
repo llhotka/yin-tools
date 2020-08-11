@@ -248,27 +248,32 @@ License along with this file.  If not, see
 
   <template name="escape-text">
     <param name="text"/>
-    <if test="string-length($text) &gt; 0">
-      <call-template name="escape-char">
-	<with-param name="char" select="substring($text,1,1)"/>
-      </call-template>
-      <call-template name="escape-text">
-	<with-param name="text" select="substring($text,2)"/>
-      </call-template>
-    </if>
+    <call-template name="escape-char">
+      <with-param name="text">
+	<call-template name="escape-char">
+	  <with-param name="text" select="$text"/>
+	  <with-param name="char">\</with-param>
+	</call-template>
+      </with-param>
+      <with-param name="char">"</with-param>
+    </call-template>
   </template>
 
   <template name="escape-char">
+    <param name="text"/>
     <param name="char"/>
-    <variable name="simple-escapes">"\</variable>
     <choose>
-      <when test="contains($simple-escapes, $char)">
-	<value-of select="concat('\', $char)"/>
+      <when test="contains($text, $char)">
+	<value-of
+	    select="concat(substring-before($text, $char), '\', $char)"/>
+	<call-template name="escape-char">
+	  <with-param name="text"
+		      select="substring-after($text, $char)"/>
+	  <with-param name="char" select="$char"/>
+	</call-template>
       </when>
-      <when test="$char='&#9;'">\t</when>
-      <when test="$char='&#10;'">\n</when>
       <otherwise>
-	<value-of select="$char"/>
+	<value-of select="$text"/>
       </otherwise>
     </choose>
   </template>
