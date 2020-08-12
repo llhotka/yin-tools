@@ -27,7 +27,7 @@ The `xslt` directory contains the following XSLT stylesheets:
 * [getrev.xsl](xslt/getrev.xsl) – extract the date of the latest revision of a (sub)module
 * [yin2yang.xsl](yin2yang.xsl) – convert a (sub)module, optionally with [HTML-like markup extensions](#html-like-extensions-to-yin), to the compact YANG syntax.
 
-The included [Makefile](xslt/Makefile) can be used for converting any number of modules or submodules to the compact YANG syntax, while also
+The included [Makefile](xslt/Makefile) can be used for converting any number of (sub)modules in the extended YIN syntax (hence with the `.yinx` extension) to the compact YANG syntax, while also
 
 * canonicalizing the order of statements, and
 * using the current date for the latest revision of each (sub)module.
