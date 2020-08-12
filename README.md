@@ -23,9 +23,14 @@ in the `schema` directory (provided that [trang](https://relaxng.org/jclark/tran
 
 The `xslt` directory contains the following XSLT stylesheets:
 
-* [canonicalize.xsl](xslt/canonicalize.xsl) – rearrange the YANG module so that all statements are in the [canonical order](https://tools.ietf.org/html/rfc7950#section-14)
-* [getrev.xsl](xslt/getrev.xsl) – extract the date of the latest revision
-* [yin2yang.xsl](yin2yang.xsl) – convert the module (optionally with [HTML-like markup extensions](#html-like-extensions-to-yin)) to the standard YANG syntax.
+* [canonicalize.xsl](xslt/canonicalize.xsl) – rearrange a YANG module or submodule so that all its statements are in the [canonical order](https://tools.ietf.org/html/rfc7950#section-14)
+* [getrev.xsl](xslt/getrev.xsl) – extract the date of the latest revision of a (sub)module
+* [yin2yang.xsl](yin2yang.xsl) – convert a (sub)module, optionally with [HTML-like markup extensions](#html-like-extensions-to-yin), to the compact YANG syntax.
+
+The included [Makefile](xslt/Makefile) can be used for converting any number of modules or submodules to the compact YANG syntax, while also
+
+* canonicalizing the order of statements, and
+* using the current date for the latest revision of each (sub)module.
 
 ## HTML-like extensions to YIN
 
@@ -38,3 +43,5 @@ Arguments of some YANG statements often contain longer text containing multiple 
 * `<li>` - list item
 
 The `<p>`, `<ul>` and `<ol>` elements are only permitted as children of the YIN `<text>` element, i.e. inside arguments of the following YANG statements: **contact**, **description**, **error-message** and **organization**.
+
+In order to distinguish this extended syntax from the original YIN syntax, it is recommended to use the `.yinx` extension for files containing such modules.
