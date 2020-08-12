@@ -15,7 +15,7 @@ The schemas can also be used with schema-aware XML editors, such as [oXygen](htt
 
 Some XML tools can only work with the RELAX NG compact syntax. The latter can be obtained by running
 ``` shell
-make
+$ make
 ```
 in the `schema` directory (provided that [trang](https://relaxng.org/jclark/trang.html) is instaled),
 
