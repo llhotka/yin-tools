@@ -7,7 +7,7 @@ This repository contains various tools that aids in editing, processing and vali
 The `schema` directory contains two RELAX NG schemas:
 
 * [yin.rng](schema/yin.rng] – schema of the standard YIN syntax
-* [yin-html.rng](schema/yin-html.rng) – YIN with HTML-like markup extensions.
+* [yin-html.rng](schema/yin-html.rng) – YIN with [HTML-like markup extensions](#html-like-extensions-to-yin).
 
 The RELAX NG schema can be used for validating a YANG module (in the YIN syntax, of course). The `validate` target of the included [Makefile](schema/Makefile) shows how it can be done with the [Jing](https://relaxng.org/jclark/jing.html) tool.
 
@@ -25,7 +25,7 @@ The `xslt` directory contains the following XSLT stylesheets:
 
 * [canonicalize.xsl](xslt/canonicalize.xsl) – rearrange the YANG module so that all statements are in the [canonical order](https://tools.ietf.org/html/rfc7950#section-14)
 * [getrev.xsl](xslt/getrev.xsl) – extract the date of the latest revision
-* [yin2yang.xsl](yin2yang.xsl) – convert the module (optionally with HTML-like markup extensions) to the standard YANG syntax.
+* [yin2yang.xsl](yin2yang.xsl) – convert the module (optionally with [HTML-like markup extensions](#html-like-extensions-to-yin)) to the standard YANG syntax.
 
 ## HTML-like extensions to YIN
 
