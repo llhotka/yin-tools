@@ -640,9 +640,9 @@ License along with this file.  If not, see
       <text>&#xA;</text>
     </if>
     <call-template name="indent"/>
-    <text>/*</text>
+    <text>/* </text>
     <value-of select="."/>
-    <text>*/&#xA;</text>
+    <text> */&#xA;</text>
   </template>
 
   <!-- Extension -->
