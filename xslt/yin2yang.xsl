@@ -592,7 +592,7 @@ License along with this file.  If not, see
     <param name="prefix"/>
     <param name="last"/>
     <if test="position()>1">
-      <value-of select="concat('&#xA;&#xA;',$prefix)"/>
+      <value-of select="concat('&#xA;',$prefix)"/>
     </if>
     <value-of
 	select="concat(substring($list-bullets,
