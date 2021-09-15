@@ -389,12 +389,7 @@ License along with this file.  If not, see
   </template>
 
   <template
-      match="yin:config|yin:deviate|yin:error-app-tag
-	     |yin:fraction-digits|yin:key|yin:length|yin:mandatory
-	     |yin:max-elements|yin:min-elements|yin:ordered-by
-	     |yin:pattern|yin:position|yin:presence|yin:range
-	     |yin:require-instance|yin:status|yin:value
-	     |yin:yin-element">
+      match="yin:key|yin:pattern|yin:presence|yin:range">
     <call-template name="statement-dq">
       <with-param name="arg" select="@value"/>
     </call-template>
@@ -410,7 +405,12 @@ License along with this file.  If not, see
     <call-template name="chop-arg"/>
   </template>
 
-  <template match="yin:modifier|yin:prefix|yin:yang-version">
+  <template match="yin:modifier|yin:prefix|yin:yang-version
+		   |yin:config|yin:deviate|yin:error-app-tag
+		   |yin:fraction-digits|yin:length|yin:mandatory
+		   |yin:max-elements|yin:min-elements|yin:ordered-by
+		   |yin:position|yin:require-instance|yin:status
+		   |yin:value|yin:yin-element">
     <call-template name="statement">
       <with-param name="arg" select="@value"/>
     </call-template>
