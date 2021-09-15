@@ -202,7 +202,8 @@ License along with this file.  If not, see
 
   <template name="keyword">
     <param name="kw" select="local-name()"/>
-    <if test="count(ancestor::*)=1">
+    <if test="count(ancestor::*)=1 and not($kw = 'yang-version' or
+	      $kw = 'namespace' or $kw = 'prefix')">
       <text>&#xA;</text>
     </if>
     <call-template name="indent"/>
