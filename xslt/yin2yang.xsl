@@ -533,35 +533,56 @@ License along with this file.  If not, see
 
   <template match="html:ul">
     <param name="prefix"/>
-    <if test="position()>1">
-      <value-of select="concat('&#xA;&#xA;',$prefix)"/>
-    </if>
-    <apply-templates select="html:li">
-      <with-param name="prefix" select="$prefix"/>
-      <with-param name="last" select="position()=last()"/>
-    </apply-templates>
+    <choose>
+      <when test="html:li">
+	<if test="position()>1">
+	  <value-of select="concat('&#xA;&#xA;',$prefix)"/>
+	</if>
+	<apply-templates select="html:li">
+	  <with-param name="prefix" select="$prefix"/>
+	  <with-param name="last" select="position()=last()"/>
+	</apply-templates>
+      </when>
+      <otherwise>
+	<if test="position()=last()">";&#xA;</if>
+      </otherwise>
+    </choose>
   </template>
 
   <template match="html:ol">
     <param name="prefix"/>
-    <if test="position()>1">
-      <value-of select="concat('&#xA;&#xA;',$prefix)"/>
-    </if>
-    <apply-templates select="html:li" mode="numbered">
-      <with-param name="prefix" select="$prefix"/>
-      <with-param name="last" select="position()=last()"/>
-    </apply-templates>
+    <choose>
+      <when test="html:li">
+	<if test="position()>1">
+	  <value-of select="concat('&#xA;&#xA;',$prefix)"/>
+	</if>
+	<apply-templates select="html:li" mode="numbered">
+	  <with-param name="prefix" select="$prefix"/>
+	  <with-param name="last" select="position()=last()"/>
+	</apply-templates>
+      </when>
+      <otherwise>
+	<if test="position()=last()">";&#xA;</if>
+      </otherwise>
+    </choose>
   </template>
 
   <template match="html:p">
     <param name="prefix"/>
-    <if test="position()>1">
-      <value-of select="concat('&#xA;&#xA;',$prefix)"/>
-    </if>
-    <apply-templates select="text()|html:br" mode="fill">
-      <with-param name="prefix" select="$prefix"/>
-      <with-param name="last" select="position()=last()"/>
-    </apply-templates>
+    <choose>
+      <when test="html:*|text()">
+	<if test="position()>1">
+	  <value-of select="concat('&#xA;&#xA;',$prefix)"/>
+	</if>
+	<apply-templates select="text()|html:br" mode="fill">
+	  <with-param name="prefix" select="$prefix"/>
+	  <with-param name="last" select="position()=last()"/>
+	</apply-templates>
+      </when>
+      <otherwise>
+	<if test="position()=last()">";&#xA;</if>
+      </otherwise>
+    </choose>
   </template>
 
   <template match="text()" mode="fill">
@@ -617,7 +638,7 @@ License along with this file.  If not, see
     <param name="prefix"/>
     <param name="last"/>
     <if test="position()>1">
-      <value-of select="concat('&#xA;&#xA;',$prefix)"/>
+      <value-of select="concat('&#xA;',$prefix)"/>
     </if>
     <value-of
 	select="concat(count(preceding-sibling::html:li) + 1,'. ')"/>
