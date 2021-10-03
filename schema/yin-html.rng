@@ -19,8 +19,11 @@ Arguments of 'contact', 'description', 'organization' and 'reference'
 <html:ul> - unordered list
 <html:ol> - ordered list
 
-<html:p> elements may, apart from text, also contain empty
-<html:br/> elements that cause an unconditional line break.
+List elements <html:ul> a <html:ol> may appear at the paragraph level
+or inside a paragraph.
+
+<html:p> elements may, apart from text and list elements, also contain
+empty <html:br/> elements that cause an unconditional line break.
 
 List elements must contain one or more <html:li> elements
 representing list items with text and <html:br/> elements.
@@ -96,9 +99,17 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
     <!-- This may be extended in the future -->
     <mixed>
       <zeroOrMore>
-        <element name="html:br">
-          <empty/>
-        </element>
+	<choice>
+          <element name="html:br">
+            <empty/>
+          </element>
+          <element name="html:ul">
+            <ref name="html-list-content"/>
+          </element>
+          <element name="html:ol">
+            <ref name="html-list-content"/>
+          </element>
+	</choice>
       </zeroOrMore>
     </mixed>
   </define>
