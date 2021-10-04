@@ -20,7 +20,11 @@ NOTES:
    <html:ul> - unordered list
    <html:ol> - ordered list
 
-   <html:p> elements may, apart from text, also contain empty
+   List elements <html:ul> a <html:ol> may appear at the paragraph
+   level or inside a paragraph. In the latter case, there are no empty
+   lines separating the list from the surrounding contents.
+
+   <html:p> elements may, apart from text and lists, also contain empty
    <html:br/> elements that cause an unconditional line break.
 
    List elements must contain one or more <html:li> elements
@@ -69,8 +73,8 @@ License along with this file.  If not, see
   <output method="text"/>
   <strip-space elements="*"/>
 
-  <!-- The 'date' parameter, if set, overrides the value of the
-       first (most recent) 'revision' statement. -->
+  <!-- The 'date' parameter, if set, overrides the value of the first
+       (most recent) 'revision' statement. -->
   <param name="date"/>
   <!-- Amount of indentation added for each YANG hierarchy level. -->
   <param name="indent-step" select="2"/>
@@ -536,7 +540,10 @@ License along with this file.  If not, see
     <choose>
       <when test="html:li">
 	<if test="position()>1">
-	  <value-of select="concat('&#xA;&#xA;',$prefix)"/>
+	  <if test="not(parent::html:p)">
+	    <text>&#xA;</text>
+	  </if>
+	  <value-of select="concat('&#xA;',$prefix)"/>
 	</if>
 	<apply-templates select="html:li">
 	  <with-param name="prefix" select="$prefix"/>
@@ -554,7 +561,10 @@ License along with this file.  If not, see
     <choose>
       <when test="html:li">
 	<if test="position()>1">
-	  <value-of select="concat('&#xA;&#xA;',$prefix)"/>
+	  <if test="not(parent::html:p)">
+	    <text>&#xA;</text>
+	  </if>
+	  <value-of select="concat('&#xA;',$prefix)"/>
 	</if>
 	<apply-templates select="html:li" mode="numbered">
 	  <with-param name="prefix" select="$prefix"/>
@@ -574,7 +584,8 @@ License along with this file.  If not, see
 	<if test="position()>1">
 	  <value-of select="concat('&#xA;&#xA;',$prefix)"/>
 	</if>
-	<apply-templates select="text()|html:br" mode="fill">
+	<apply-templates
+	    select="text()|html:br|html:ul|html:ol">
 	  <with-param name="prefix" select="$prefix"/>
 	  <with-param name="last" select="position()=last()"/>
 	</apply-templates>
@@ -585,7 +596,7 @@ License along with this file.  If not, see
     </choose>
   </template>
 
-  <template match="text()" mode="fill">
+  <template match="text()">
     <param name="prefix"/>
     <param name="last"/>
     <call-template name="fill-text">
@@ -603,7 +614,7 @@ License along with this file.  If not, see
     </call-template>
   </template>
 
-  <template match="html:br" mode="fill">
+  <template match="html:br">
     <param name="prefix"/>
     <param name="last"/>
     <value-of select="concat('&#xA;',$prefix)"/>
@@ -613,46 +624,57 @@ License along with this file.  If not, see
   <template match="html:li">
     <param name="prefix"/>
     <param name="last"/>
-    <if test="position()>1">
-      <value-of select="concat('&#xA;',$prefix)"/>
-    </if>
-    <value-of
-	select="concat(substring($list-bullets,
-		count(ancestor::html:ul),1),' ')"/>
-    <call-template name="fill-text">
-      <with-param name="text">
-	<call-template name="escape-text">
-	  <with-param name="text" select="normalize-space(.)"/>
-	</call-template>
-	<if test="$last and position()=last()">";&#xA;</if>
-      </with-param>
+    <call-template name="list-item">
       <with-param
-	  name="length"
-	  select="$line-length - string-length($prefix) - 2"/>
-      <with-param name="prefix" select="concat($prefix,'  ')"/>
-      <with-param name="at-start" select="true()"/>
+	  name="label"
+	  select="substring($list-bullets,
+		  count(ancestor::html:ul),1)"/>
+      <with-param name="prefix" select="$prefix"/>
+      <with-param name="last" select="$last"/>
     </call-template>
   </template>
 
   <template match="html:li" mode="numbered">
     <param name="prefix"/>
     <param name="last"/>
+    <call-template name="list-item">
+      <with-param
+	  name="label"
+	  select="concat(count(preceding-sibling::html:li) + 1,'.')"/>
+      <with-param name="prefix" select="$prefix"/>
+      <with-param name="last" select="$last"/>
+    </call-template>
+  </template>
+
+  <template name="list-item">
+    <param name="label"/>
+    <param name="prefix"/>
+    <param name="last"/>
     <if test="position()>1">
       <value-of select="concat('&#xA;',$prefix)"/>
     </if>
-    <value-of
-	select="concat(count(preceding-sibling::html:li) + 1,'. ')"/>
+    <value-of select="concat($label,' ')"/>
     <call-template name="fill-text">
       <with-param name="text">
 	<call-template name="escape-text">
 	  <with-param name="text" select="normalize-space(.)"/>
 	</call-template>
-	<if test="$last and position()=last()">";&#xA;</if>
+	<if test="position()=last()">
+	  <choose>
+	    <when test="$last">";&#xA;</when>
+	    <otherwise>
+	      <if test="ancestor::html:p">
+		<value-of select="concat('&#xA; ', $prefix)"/>
+	      </if>
+	    </otherwise>
+	  </choose>
+	</if>
       </with-param>
       <with-param
 	  name="length"
-	  select="$line-length - string-length($prefix) - 3"/>
-      <with-param name="prefix" select="concat($prefix,'   ')"/>
+	  select="$line-length - string-length($prefix) -
+		  string-length($label) - 1"/>
+      <with-param name="prefix" select="concat($prefix,'  ')"/>
       <with-param name="at-start" select="true()"/>
     </call-template>
   </template>
