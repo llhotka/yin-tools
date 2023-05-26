@@ -394,7 +394,7 @@ License along with this file.  If not, see
   </template>
 
   <template
-      match="yin:key|yin:pattern|yin:presence|yin:range">
+      match="yin:key|yin:length|yin:pattern|yin:presence|yin:range">
     <call-template name="statement-dq">
       <with-param name="arg" select="@value"/>
     </call-template>
@@ -412,7 +412,7 @@ License along with this file.  If not, see
 
   <template match="yin:modifier|yin:prefix|yin:yang-version
 		   |yin:config|yin:deviate|yin:error-app-tag
-		   |yin:fraction-digits|yin:length|yin:mandatory
+		   |yin:fraction-digits|yin:mandatory
 		   |yin:max-elements|yin:min-elements|yin:ordered-by
 		   |yin:position|yin:require-instance|yin:status
 		   |yin:value|yin:yin-element">
