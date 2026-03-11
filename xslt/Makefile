@@ -1,3 +1,4 @@
+XSLT_DIR = .
 MODULES =
 DATE ?= $(shell date +%F)
 
@@ -9,8 +10,8 @@ xslpars = --stringparam date $(DATE)
 all: $(yams)
 
 %.yang: %.yinx
-	@xsltproc canonicalize.xsl $< | \
-	  xsltproc --output $@ $(xslpars) yin2yang.xsl -
+	@xsltproc $(XSLT_DIR)/canonicalize.xsl $< | \
+	  xsltproc --output $@ $(xslpars) $(XSLT_DIR)/yin2yang.xsl -
 
 clean:
 	@rm -rf $(yams)
