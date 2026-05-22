@@ -441,13 +441,13 @@ License along with this file.  If not, see
 
   <template match="yin:error-message">
     <call-template name="keyword"/>
-    <apply-templates select="yin:value" mode="chop"/>
+    <apply-templates select="yin:value" mode="html"/>
   </template>
 
   <template match="yin:contact|yin:description
 		       |yin:organization|yin:reference">
     <call-template name="keyword"/>
-    <apply-templates select="yin:text"/>
+    <apply-templates select="yin:text" mode="html"/>
   </template>
 
   <template match="yin:input|yin:output">
@@ -502,7 +502,7 @@ License along with this file.  If not, see
     </call-template>
   </template>
 
-  <template match="yin:text">
+  <template match="yin:text|yin:value" mode="html">
     <variable name="qchar">"</variable>
     <text>&#xA;</text>
     <variable name="prf">
