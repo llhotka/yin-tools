@@ -803,7 +803,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
   <define name="error-message-stmt">
     <element name="error-message">
       <element name="value">
-	<text/>
+	<ref name="text-content"/>
       </element>
       <ref name="extensions"/>
     </element>
