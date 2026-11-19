@@ -2,7 +2,7 @@ MODULE =
 
 .PHONY: all clean validate
 
-all: yin-html.rnc
+all: yin.rnc yin-html.rnc
 
 %.rnc: %.rng
 	trang -I rng -O rnc $< $@
