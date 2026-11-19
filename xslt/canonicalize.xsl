@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Program name: canonicalize.xsl
 
-Copyright © 2020 by Ladislav Lhotka <ladislav@lhotka.name>
+Copyright © 2020–2026 by Ladislav Lhotka <ladislav@lhotka.name>
 
 This stylesheet rearranges a YIN module into canonical order [RFC 7950].
 
@@ -24,6 +24,7 @@ License along with this file.  If not, see
     xmlns="http://www.w3.org/1999/XSL/Transform"
     xmlns:xi="http://www.w3.org/2001/XInclude"
     xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:ysv="urn:ietf:params:xml:ns:yang:ietf-yang-semver"
     xmlns:md="urn:ietf:params:xml:ns:yang:ietf-yang-metadata"
     xmlns:yin="urn:ietf:params:xml:ns:yang:yin:1"
     xmlns:ymt="urn:ietf:params:xml:ns:yang:ietf-yang-text-media-type"
@@ -133,6 +134,7 @@ License along with this file.  If not, see
 	  select="html:*|xi:*|@*|text()|processing-instruction()"/>
       <apply-templates select="yin:prefix"/>
       <apply-templates select="yin:revision-date"/>
+      <apply-templates select="ysv:recommended-min-version"/>
       <apply-templates select="yin:description"/>
       <apply-templates select="yin:reference"/>
     </copy>
@@ -169,6 +171,7 @@ License along with this file.  If not, see
     <copy>
       <apply-templates
 	  select="html:*|xi:*|@*|text()|processing-instruction()"/>
+      <apply-templates select="ysv:version"/>
       <apply-templates select="yin:description"/>
       <apply-templates select="yin:reference"/>
     </copy>
@@ -403,7 +406,8 @@ License along with this file.  If not, see
 		       yin:status|yin:config|yin:mandatory|yin:presence|
 		       yin:ordered-by|yin:value|yin:error-app-tag|
 		       yin:min-elements|yin:max-elements|yin:key|
-		       yin:revision-date|yin:unique|yin:modifier">
+		       yin:revision-date|yin:unique|yin:modifier|
+                       ysv:recommended-min-version|ysv:version">
     <call-template name="preceding-comment"/>
     <copy>
       <apply-templates

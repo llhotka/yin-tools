@@ -2,9 +2,9 @@
 
 <!-- Program name: yin.rng
 
-Copyright © 2018 by Ladislav Lhotka, CZ.NIC <lhotka@nic.cz>
+Copyright © 2018–2026 by Ladislav Lhotka <ladislav@lhotka.name>
 
-RELAX NG schema for YIN (see RFC 6020).
+RELAX NG schema for YIN (see RFC 7950).
 
 ==
 
@@ -23,6 +23,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 <grammar xmlns="http://relaxng.org/ns/structure/1.0"
 	 ns="urn:ietf:params:xml:ns:yang:yin:1"
+         xmlns:ysv="urn:ietf:params:xml:ns:yang:ietf-yang-semver"
 	 xmlns:md="urn:ietf:params:xml:ns:yang:ietf-yang-metadata"
 	 xmlns:dc="http://purl.org/dc/terms"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
@@ -226,6 +227,9 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 	<optional>
 	  <ref name="revision-date-stmt"/>
 	</optional>
+        <optional>
+          <ref name="recommended-min-version-stmt"/>
+        </optional>
 	<ref name="desc-ref"/>
 	<ref name="extensions"/>
       </interleave>
@@ -346,9 +350,28 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 	<data type="date"/>
       </attribute>
       <interleave>
+        <optional>
+          <ref name="semantic-version-stmt"/>
+        </optional>
 	<ref name="desc-ref"/>
 	<ref name="extensions"/>
       </interleave>
+    </element>
+  </define>
+
+  <define name="semantic-version-stmt">
+    <element name="ysv:version">
+      <attribute name="yang-semantic-version">
+        <ref name="yang-semver"/>
+      </attribute>
+    </element>
+  </define>
+
+  <define name="recommended-min-version-stmt">
+    <element name="ysv:recommended-min-version">
+      <attribute name="yang-semantic-version">
+        <ref name="semver"/>
+      </attribute>
     </element>
   </define>
 
@@ -1580,6 +1603,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 	<anyName>
 	  <except>
 	    <nsName/>
+	    <nsName ns="urn:ietf:params:xml:ns:yang:ietf-yang-semver"/>
 	    <nsName ns="urn:ietf:params:xml:ns:yang:ietf-yang-metadata"/>
 	  </except>
 	</anyName>
@@ -1679,6 +1703,22 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
   <define name="descendant-schema-nodeid">
     <data type="string">
       <param name="pattern">([_A-Za-z][._\-A-Za-z0-9]*:)?[_A-Za-z][._\-A-Za-z0-9]*(/([_A-Za-z][._\-A-Za-z0-9]*:)?[_A-Za-z][._\-A-Za-z0-9]*)*</param>
+    </data>
+  </define>
+
+  <define name="semver">
+    <data type="string">
+      <param name="minLength">5</param>
+      <param name="maxLength">32</param>
+      <param name="pattern">[0-9]+[.][0-9]+[.][0-9]+</param>
+    </data>
+  </define>
+
+  <define name="yang-semver">
+    <data type="string">
+      <param name="minLength">5</param>
+      <param name="maxLength">128</param>
+      <param name="pattern">[0-9]+[.][0-9]+[.][0-9]+(_(non_)?compatible)?(-[A-Za-z0-9.\-]+)?([+][A-Za-z0-9.\-]+)?</param>
     </data>
   </define>
 </grammar>

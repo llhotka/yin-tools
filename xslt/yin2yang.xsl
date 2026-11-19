@@ -2,7 +2,7 @@
 
 <!-- Program name: yin2yang.xsl
 
-Copyright © 2020 by Ladislav Lhotka <ladislav@lhotka.name>
+Copyright © 2026–2026 by Ladislav Lhotka <ladislav@lhotka.name>
 
 Translates YIN to YANG (see RFC 7950).
 
@@ -67,6 +67,7 @@ License along with this file.  If not, see
 <stylesheet
     xmlns="http://www.w3.org/1999/XSL/Transform"
     xmlns:yin="urn:ietf:params:xml:ns:yang:yin:1"
+    xmlns:ysv="urn:ietf:params:xml:ns:yang:ietf-yang-semver"
     xmlns:md="urn:ietf:params:xml:ns:yang:ietf-yang-metadata"
     xmlns:html="http://www.w3.org/1999/xhtml"
     version="1.0">
@@ -418,6 +419,12 @@ License along with this file.  If not, see
 		   |yin:value|yin:yin-element">
     <call-template name="statement">
       <with-param name="arg" select="@value"/>
+    </call-template>
+  </template>
+
+  <template match="ysv:version|ysv:recommended-min-version">
+    <call-template name="extension-statement">
+      <with-param name="arg" select="@yang-semantic-version"/>
     </call-template>
   </template>
 
